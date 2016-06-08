@@ -18,15 +18,6 @@
 /// by using a subclass of NSData, which is fast and portable.
 /// You're welcome to implement a ZID class using another approach.
 ///
-/// ## Ideas and credits
-///
-///   * https://github.com/sixarm/sixarm_ruby_zid
-///   * https://github.com/mauriciosantos/Buckets-Swift/blob/master/Source/BitArray.swift
-///   * https://github.com/CryptoCoinSwift/UInt256/blob/master/Classes/UInt256.swift
-///   * http://cocoadocs.org/docsets/Buckets/1.0.1/Extensions/BitArray.html
-///   * http://jamescarroll.xyz/2015/09/09/safely-generating-cryptographically-secure-random-numbers-with-swift/
-///   * http://stackoverflow.com/questions/1305225/best-way-to-serialize-an-nsdata-into-a-hexadeximal-string/25378464#25378464
-///
 /// ## Why do we use NSData, instead of any other class or struct?
 ///
 /// We use NSData because it's an easy implementation for arbitrary bits.
@@ -51,11 +42,23 @@
 ///
 ///   * NSData is “toll-free bridged” with its Core Foundation counterpart,
 ///     CFDataRef, which means it's fast to switch to a CFDataRef object.
-//
+///
+/// ## Ideas for alternative implementations
+///
+///   * [BitArray Swift class](https://github.com/mauriciosantos/Buckets-Swift/blob/master/Source/BitArray.swift)
+///   * [UInt256 Swift class](https://github.com/CryptoCoinSwift/UInt256/blob/master/Classes/UInt256.swift)
+///
+/// ## Thanks
+///
+///   * [SixArm ZID project](https://github.com/sixarm/sixarm_ruby_zid)
+///   * [Safely Generating Cryptographically Secure Random Numbers With Swift - by James Carrol](http://jamescarroll.xyz/2015/09/09/safely-generating-cryptographically-secure-random-numbers-with-swift/)
+///   * [Best way to serialize an NSData into a hexadeximal string](http://stackoverflow.com/questions/1305225/best-way-to-serialize-an-nsdata-into-a-hexadeximal-string/25378464#25378464)
+///
 /// :author: Joel Parker Henderson ( https://joelparkerhenderson.com )
 /// :license: LGPL ( https://www.gnu.org/copyleft/lgpl.html )
 
 import Foundation
+import Security
 
 public class ZID : NSData {
 
@@ -70,8 +73,11 @@ public class ZID : NSData {
   /// must be divisible by 8; this is for ease of implementation.
   ///
   public static func create(count: Int) -> NSData {
+     // Create a new byte array as a temporary storage area.
      var bytes = [UInt8](count: count/8, repeatedValue: 0)
+     // Fill the array with secure random bytes using Swift's security class
      SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+     // Create a new NSData object, initialized using the secure bytes
      return NSData(bytes: &bytes, length: bytes.count)
   }
 
@@ -88,10 +94,18 @@ public class ZID : NSData {
   ///
   public static func toString(data: NSData) -> String {
     return
+      // Map each byte to a two-character hex string,
+      // then join the results into one longer string.
+      //
+      // TODO Research security implicates of UnsafeBufferPointer.
+      // For example, are there any potential risks of buffer overflows,
+      // or simultaneous modification by other functions or threads, etc.?
       UnsafeBufferPointer<UInt8>(
         start: UnsafePointer(data.bytes),
         count: data.length
         ).map {
+          // Format one byte as e.g. "00", "01", ..., "fe", "ff".
+          // The format string "%02x" means two-character lowercase hex.
           String(format: "%02x", $0)
         }.joinWithSeparator("")
   }
