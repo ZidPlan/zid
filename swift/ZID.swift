@@ -53,7 +53,7 @@
 ///     CFDataRef, which means it's fast to switch to a CFDataRef object.
 //
 /// :author: Joel Parker Henderson ( https://joelparkerhenderson.com )
-/// :license: GPL ( https://www.gnu.org/copyleft/gpl.html )
+/// :license: LGPL ( https://www.gnu.org/copyleft/lgpl.html )
 
 import Foundation
 
