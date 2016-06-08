@@ -100,24 +100,24 @@ public class ZID : NSData {
   ///     -> ""a694f6805d0e49d384479e46e13b10b8"
   ///
   public static func toString(data: NSData) -> String {
+    // This implementation maps each byte to a two-character hex string,
+    // then joins the results into one longer string.
+    //
+    // This implementation iterates on the bytes by using the Swift built-in
+    // UnsafeBufferPointer. This is a pointer to an object of type Memory.
+    // This type provides no automated memory management, and therefore
+    // the code must take care to allocate and free memory appropriately.
+    //
+    // This function does not allocate memory for the object,
+    // and does not free memory for the object, thus is safe.
+    //
+    // TODO Add error handing if the object is not initialized.
+    //
+    // TODO Research security implicates of UnsafeBufferPointer.
+    // For example, are there any potential risks of buffer overflows,
+    // or simultaneous modification by other functions or threads, etc.?
+    //
     return
-      // This implementation maps each byte to a two-character hex string,
-      // then joins the results into one longer string.
-      //
-      // This implementation iterates on the bytes by using the Swift built-in
-      // UnsafeBufferPointer. This is a pointer to an object of type Memory.
-      // This type provides no automated memory management, and therefore
-      // the code must take care to allocate and free memory appropriately.
-      //
-      // This function does not allocate memory for the object,
-      // and does not free memory for the object, thus is safe.
-      //
-      // TODO Add error handing if the object is not initialized.
-      //
-      // TODO Research security implicates of UnsafeBufferPointer.
-      // For example, are there any potential risks of buffer overflows,
-      // or simultaneous modification by other functions or threads, etc.?
-      //
       UnsafeBufferPointer<UInt8>(
         start: UnsafePointer(data.bytes),
         count: data.length
