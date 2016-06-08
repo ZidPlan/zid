@@ -79,22 +79,31 @@ public class ZID : NSData {
   /// Note: in the current implementation, the number of bits
   /// must be divisible by 8; this is for ease of implementation.
   ///
-  /// Note: in the current implementation, the function creates
-  /// a temporary byte array, fills the byte array with random data,
-  /// then copies the byte array into a new NSData object.
-  ///
-  /// TODO Is it possible to optimize this function, for example
-  /// by skipping the initialization of the byte array to zero items,
-  /// and/or by skipping the byte array and instead creating the NSData
-  /// object first then filling it with random data?
-  ///
   public static func create(count: Int) -> NSData {
-     // Create a new byte array as a temporary storage area.
-     var bytes = [UInt8](count: count/8, repeatedValue: 0)
-     // Fill the array with secure random bytes using Swift's security class
-     SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
-     // Create a new NSData object, initialized using the secure bytes
-     return NSData(bytes: &bytes, length: bytes.count)
+    // Note: in the current implementation, the function creates
+    // a temporary byte array, fills the byte array with random data,
+    // then copies the byte array into a new NSData object.
+    //
+    // TODO research any thread safety issues, such as any risks
+    // of leaks across threads, or any risk of another thread changing
+    // the memory location near-simultaneously, or malloc/free issues.
+    //
+    // TODO Is it possible to optimize this function, for example
+    // by skipping the initialization of the byte array to zero items,
+    // and/or by skipping the byte array and instead creating the NSData
+    // object first then filling it with random data?
+
+    // Create a new byte array as a temporary storage area.
+    // The byte array lives only for the duration of this function.
+    var bytes = [UInt8](count: count/8, repeatedValue: 0)
+
+    // Fill the array with secure random bytes.
+    // This uses Swift's built-in secure random generator.
+    SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+
+    // Create a new NSData object, initialized using the secure bytes.
+    // This copies the byte array contents to the new NSData object.
+    return NSData(bytes: &bytes, length: bytes.count)
   }
 
   /// Return the string representation of the ZID,
@@ -120,6 +129,9 @@ public class ZID : NSData {
     // This function does not allocate memory for the object,
     // and does not free memory for the object, thus is safe.
     //
+    // TODO research any thread safety issues, such as any risks
+    // of leaks across threads, or any risk of another thread changing
+    // the memory location near-simultaneously, or malloc/free issues.
     // TODO Add error handing if the object is not initialized.
     //
     // TODO Research security implicates of UnsafeBufferPointer.
@@ -131,7 +143,10 @@ public class ZID : NSData {
         start: UnsafePointer(data.bytes),
         count: data.length
         ).map {
-          // Format one byte as e.g. "00", "01", ..., "fe", "ff".
+          // Format one byte as a hexadecimal string that is two characters,
+          // and always digits 0-9 or lowercase letters a, b, c, d, e, f.
+          // For example, a byte with all bits off will format as "00",
+          // and a byte with all bits on will format as "ff".
           // The format string "%02x" means two-character lowercase hex.
           String(format: "%02x", $0)
         }.joinWithSeparator("")
