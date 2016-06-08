@@ -1,16 +1,8 @@
 # ZID: Zen Identifier
 
-* Git: <https://github.com/joelparkerhenderosn/zid>
-* Contact: Joel Parker Henderson, <joel@sixarm.com>
-* Changes: See CHANGES.md file.
-* License: See LICENSE.md file.
-* Helping: See CONTRIBUTING.md file.
-
-## Introduction
-
 ZID stands for "Zen Identifier".
 
-A ZID is a secure random id, similar to a random UUID (Universally Unique Identifier).
+A Zen Identifier is a secure random id, similar to a random UUID (Universally Unique Identifier), with improvements to be faster, easier, more secure, and more sharable.
 
 ZID specification:
 
@@ -30,14 +22,15 @@ If you're writing a ZID class, we suggest writing these methods:
 
 ## Language Implementations
 
+Many programming languages have two kinds of random number generators: one kind is insecure, and one kind is secure. A Zen Identifier must always use the secure random number generator.
+
 Ruby:
 
   * Use SecureRandom, not rand.
 
 Swift:
 
-  * Use, not arc4
-
+  * Use SecRandomCopyBytes, not arc4random
 
 ## ZID vs. UUID comparison
 
@@ -45,18 +38,16 @@ ZID128 is similar to a UUID-4.
 
 Similarities:
 
-  * ZID and UUID both are 128 bit.
-  * ZID and UUID both contain randomness.
-  * ZID and UUID both can be represented as hexadecimal lowercase strings.
+  * Both are 128 bit.
+  * Both contain randomness.
+  * Both can be represented as hexadecimal lowercase strings.
 
 Differences:
 
-  * ZID has one form. UUID has multiple forms known as variants and versions.
-  * ZID mandates secure randomness. UUID has no mandate of secure randomness.
-  * ZID is entirely random. UUID has a non-random variant value.
-  * ZID is entirely lowercase. UUID representation and reading allows uppercase or lowercase.
-  * ZID is entirely hex digits. UUID allows dashes to separate sequences.
-  * ZID is always 32 characters. UUID allows 32-36 characters depending on dashes.
+  * A ZID specification mandates secure randomness. The UUID spect does not.
+  * A ZID is entirely random. UUID-4 has one piece that's not random, that shows the variant number.
+  * A ZID string representation is entirely hexadecimal lowercase. A UUID string representation can use dashes, lowercase, uppercase.lowercase.
+  * A ZID is specific. UUID-4 is one variant of the overall UUID specification.
 
 To format an ZID in the style of a UUID canonical representation:
 
@@ -102,3 +93,8 @@ Some databases have specialize fields for 128 bit values, such as PostgreSQL and
 
 * [Joel Parker Henderson](https://github.com/joelparkerhenderson)
 * [Michael Pope](https://github.com/amorphid)
+
+## Tracking
+
+* Git: <https://github.com/joelparkerhenderosn/zid>
+* Contact: Joel Parker Henderson, <joel@joelparkerhenderson.com>
