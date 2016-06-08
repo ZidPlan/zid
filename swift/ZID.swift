@@ -79,6 +79,15 @@ public class ZID : NSData {
   /// Note: in the current implementation, the number of bits
   /// must be divisible by 8; this is for ease of implementation.
   ///
+  /// Note: in the current implementation, the function creates
+  /// a temporary byte array, fills the byte array with random data,
+  /// then copies the byte array into a new NSData object.
+  ///
+  /// TODO Is it possible to optimize this function, for example
+  /// by skipping the initialization of the byte array to zero items,
+  /// and/or by skipping the byte array and instead creating the NSData
+  /// object first then filling it with random data?
+  ///
   public static func create(count: Int) -> NSData {
      // Create a new byte array as a temporary storage area.
      var bytes = [UInt8](count: count/8, repeatedValue: 0)
