@@ -43,6 +43,13 @@
 ///   * NSData is “toll-free bridged” with its Core Foundation counterpart,
 ///     CFDataRef, which means it's fast to switch to a CFDataRef object.
 ///
+/// ## Why is it called a "Zen Identifier"?
+///
+/// Because we like the idea of the data being:
+///
+///   * Formless, i.e. the data can be any of many data types
+///   * Simultaneously meaningful and meaningless
+///
 /// ## Ideas for alternative implementations
 ///
 ///   * [BitArray Swift class](https://github.com/mauriciosantos/Buckets-Swift/blob/master/Source/BitArray.swift)
@@ -94,12 +101,23 @@ public class ZID : NSData {
   ///
   public static func toString(data: NSData) -> String {
     return
-      // Map each byte to a two-character hex string,
-      // then join the results into one longer string.
+      // This implementation maps each byte to a two-character hex string,
+      // then joins the results into one longer string.
+      //
+      // This implementation iterates on the bytes by using the Swift built-in
+      // UnsafeBufferPointer. This is a pointer to an object of type Memory.
+      // This type provides no automated memory management, and therefore
+      // the code must take care to allocate and free memory appropriately.
+      //
+      // This function does not allocate memory for the object,
+      // and does not free memory for the object, thus is safe.
+      //
+      // TODO Add error handing if the object is not initialized.
       //
       // TODO Research security implicates of UnsafeBufferPointer.
       // For example, are there any potential risks of buffer overflows,
       // or simultaneous modification by other functions or threads, etc.?
+      //
       UnsafeBufferPointer<UInt8>(
         start: UnsafePointer(data.bytes),
         count: data.length
