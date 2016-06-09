@@ -81,11 +81,14 @@ To digest an ZID by using SHA256:
 
 ## Database tooling
 
-To store a ZID in a typical database, there are many ways:
+To store a ZID in a typical database, there are many ways.
 
-  * Use a string field. For example, a ZID128 can be represented as a 32-character string.
-  * Use a byte array. ZID128 can be stored as a 16-byte array.
-  * Use a bitfiled. ZID128 can be stored as a 128-bit field.
+For example, a ZID128 can be stored using any compatible field, such as:
+
+  * A 128-bit field
+  * A 32-character string
+  * A 16-byte array
+  * An unsigned integer 128
 
 Some databases have specialize fields for 128 bit values, such as PostgreSQL and its UUID extensions. PostgreSQL states that a UUID field will accept a string that is lowercase and that omits dashes. PostgreSQL does not do any validity-checking on the UUID value. Thus it is viable to store an ZID in a UUID field. Our team has a goal to create a PostgreSQL extension for the ZID data type.
 
