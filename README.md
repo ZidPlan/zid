@@ -12,6 +12,8 @@ ZID specification:
 
 See below for a comparison of ZID and UUID.
 
+Website coming soon: <a href="http://zidplan.com">http://zidplan.com</a>
+
 ## Classes
 
 If you're writing a ZID class, we suggest writing these methods:
