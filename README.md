@@ -86,6 +86,10 @@ To digest an Zid by using SHA256:
     $ echo -n "b29dd48b7040f788fd926ebf1f4eddd0" | shasum -a 256
     afdfb0400e479285040e541ee87d9227d5731a7232ecfa5a07074ee0ad171c64
 
+To prepend a zid to each line of input of a tab-separated-value file:
+
+    $ cat example.tsv | awk '{ "zid" | getline z; close("zid"); print z "\t" $0 }'
+
 
 ## Database tooling
 
