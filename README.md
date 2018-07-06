@@ -72,7 +72,7 @@ set -euf
 hexdump -n 16 -v -e '/1 "%02x"' -e "/16 \"\n\"" /dev/urandom
 ```
 
-Use /dev/urandom, not /dev/random
+Use /dev/urandom, not /dev/random.
 
 
 ### Swift
