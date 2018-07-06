@@ -62,9 +62,7 @@ require 'securerandom'
 puts SecureRandom.hex(16)
 ```
 
-Notes:
-
-  * Use SecureRandom, not rand.
+Use SecureRandom, not rand.
 
 ### Shell
 
@@ -74,12 +72,12 @@ set -euf
 hexdump -n 16 -v -e '/1 "%02x"' -e "/16 \"\n\"" /dev/urandom
 ```
 
-  * Use /dev/urandom, not /dev/random
+Use /dev/urandom, not /dev/random
 
 
 ### Swift
 
-  * Use SecRandomCopyBytes, not arc4random
+Use SecRandomCopyBytes, not arc4random
 
 
 ## Zid vs. UUID comparison
