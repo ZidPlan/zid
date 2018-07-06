@@ -1,8 +1,12 @@
 # Zid: Zen identifier
 
-Zid stands for "Zen identifier".
+Zid stands for "Zen identifier":
 
-A Zen identifier is a secure random id, similar to a random UUID (Universally Unique Identifier), with improvements to be faster, easier, more secure, and more sharable.
+  * A Zen identifier is a secure random number, represented as text, such as "692dff7b74575a61f2b375b1c7d824cf".
+
+  * A Zen identifier is similar to a random UUID (Universally Unique Identifier).
+
+  * A Zen identifier can be better than a UUID because a Zen indentifier is often faster, easier, more secure, and more sharable.
 
 Tracking:
 
@@ -15,8 +19,8 @@ Zid specification:
 
   * Generate all bits using a secure random generator.
   * Generate as many bits as you like.
-  * Describe the Zid by appending the number of bits, for example Zid128 means 128 bits.
-  * Any Zid string representation is always all hexadecimal, all lowecase. This means digits 0-9 and lowercase a-f.
+  * Describe the Zid by appending the number of bits, for example Zid-128 means 128 bits.
+  * A Zid string representation is all hexadecimal, all lowercase, using digits 0-9 and lowercase a-f.
 
 See below for a comparison of Zid and UUID.
 
@@ -32,17 +36,51 @@ If you're writing a Zid class, we suggest writing these methods:
 
 Many programming languages have two kinds of random number generators: one kind is insecure, and one kind is secure. A Zen identifier must always use the secure random number generator.
 
+C with libsodium:
+
+```c
+#include <sodium.h>
+int main(void)
+{
+  if (sodium_init() < 0) { exit(1); }
+  unsigned int buf_len = 16;
+  unsigned char buf[buf_len];
+  unsigned int hex_len = buf_len * 2 + 1;
+  char hex[hex_len];
+  randombytes_buf(buf, buf_len);
+  sodium_bin2hex(hex, hex_len, buf, buf_len);
+  puts(hex);
+}
+```
+
 Ruby:
 
   * Use SecureRandom, not rand.
+
+```ruby
+#!/usr/bin/env ruby
+require 'securerandom'
+puts SecureRandom.hex(16)
+```
+
+Shell:
+
+  * Use /dev/urandom, not /dev/random
+
+```sh
+#!/bin/sh
+set -euf
+hexdump -n 16 -v -e '/1 "%02x"' -e "/16 \"\n\"" /dev/urandom
+```
 
 Swift:
 
   * Use SecRandomCopyBytes, not arc4random
 
+
 ## Zid vs. UUID comparison
 
-Zid128 is similar to a UUID-4.
+Zid-128 is similar to a UUID-4.
 
 Similarities:
 
@@ -95,7 +133,7 @@ To prepend a zid to each line of input of a tab-separated-value file:
 
 There are many ways to store a Zid in a typical database.
 
-For instance a Zid128 can be stored using any compatible field:
+For instance a Zid-128 can be stored using any compatible field:
 
   * A 128-bit field
   * A 32-character string
