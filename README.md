@@ -54,7 +54,24 @@ int main(void)
 }
 ```
 
+### JavaScript
+
+[https://github.com/zidplan/zid-as-javascript](https://github.com/zidplan/zid-as-javascript)
+
+```
+const _sodium = require('libsodium-wrappers');
+(async() => {
+  await _sodium.ready;
+  const sodium = _sodium;
+  var buf = sodium.randombytes_buf(16);
+  var str = sodium.to_hex(buf);
+  console.log(str);
+})();
+```
+
 ### Ruby
+
+[https://github.com/zidplan/zid-as-ruby](https://github.com/zidplan/zid-as-ruby)
 
 ```ruby
 #!/usr/bin/env ruby
@@ -66,6 +83,8 @@ Use SecureRandom, not rand.
 
 ### Shell
 
+[https://github.com/zidplan/zid-as-shell](https://github.com/zidplan/zid-as-shell)
+
 ```sh
 #!/bin/sh
 set -euf
@@ -76,6 +95,8 @@ Use /dev/urandom, not /dev/random.
 
 
 ### Swift
+
+[https://github.com/zidplan/zid-as-swift](https://github.com/zidplan/zid-as-swift)
 
 Use SecRandomCopyBytes, not arc4random
 
