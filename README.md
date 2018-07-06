@@ -36,7 +36,8 @@ If you're writing a Zid class, we suggest writing these methods:
 
 Many programming languages have two kinds of random number generators: one kind is insecure, and one kind is secure. A Zen identifier must always use the secure random number generator.
 
-C with libsodium:
+
+### C with libsodium
 
 ```c
 #include <sodium.h>
@@ -53,9 +54,7 @@ int main(void)
 }
 ```
 
-Ruby:
-
-  * Use SecureRandom, not rand.
+### Ruby
 
 ```ruby
 #!/usr/bin/env ruby
@@ -63,9 +62,11 @@ require 'securerandom'
 puts SecureRandom.hex(16)
 ```
 
-Shell:
+Notes:
 
-  * Use /dev/urandom, not /dev/random
+  * Use SecureRandom, not rand.
+
+### Shell
 
 ```sh
 #!/bin/sh
@@ -73,7 +74,10 @@ set -euf
 hexdump -n 16 -v -e '/1 "%02x"' -e "/16 \"\n\"" /dev/urandom
 ```
 
-Swift:
+  * Use /dev/urandom, not /dev/random
+
+
+### Swift
 
   * Use SecRandomCopyBytes, not arc4random
 
