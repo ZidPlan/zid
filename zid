@@ -1,0 +1,46 @@
+#!/bin/sh
+
+##
+# zid-128-as-shell
+#
+# Generate a Zen identifier (http://www.zidplan.com)
+# using 128 bits and implementation as a shell script.
+#
+# Usage:
+#
+#     zid-128-as-shell
+#
+# Example:
+#
+#     $ zid-128-as-shell
+#     0cb49f132271bf0436a8f0689f87ee9c
+#
+# ## Notes ##
+#
+# Alternate solution for Linux, using the tr command:
+#
+#     cat /dev/urandom | tr -cd '0-9a-f' | head -c 16; echo
+#
+# Alternate solution for BSD and Mac OS X, using the tr command:
+#
+#     cat /dev/urandom | env LC_CTYPE=C tr -cd '0-9a-f' | head -c 16; echo
+#
+# Alternate solution using other lengths:
+#
+#     bits=${1-128}
+#     n=$(expr $bits / 8)
+#     hexdump -n $n -v -e '/1 "%02x"' -e "/$n \"\n\"" /dev/urandom
+#
+# This implementation uses the commands `hexdump` and `/dev/urandom`.
+#
+# ## Tracking ##
+#
+#   * Command: zid-128-as-shell
+#   * Version: 4.0.0
+#   * Created: 2015-01-25
+#   * Updated: 2018-07-06
+#   * License: Any of GPL, LGPL, MIT, BSD
+#   * Contact: Joel Parker Henderson (http://joelparkerhenderson.com)
+##
+set -euf
+hexdump -n 16 -v -e '/1 "%02x"' -e "/16 \"\n\"" /dev/urandom

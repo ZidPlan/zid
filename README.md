@@ -24,6 +24,25 @@ Zid specification:
 
 See below for a comparison of Zid and UUID.
 
+## Install
+
+## Install
+
+Option 1: download the file to wherever you want, then make it executable.
+
+    cd /usr/local/bin/
+    sudo curl -O https://raw.githubusercontent.com/ZidPlan/zid/zid
+    sudo chmod +x zid
+
+Option 2: clone the repo to anywhere you want, then add it to your path.
+
+    cd /anywhere/you/want
+    git clone https://github.com/ZidPlan/zid.git
+    export PATH="$PATH:/anywhere/you/want/zid"
+
+If you would like to help us by writing a package for any popular package manager, such as apt, yum, brew, etc., we wecome help.
+
+
 ## Classes
 
 If you're writing a Zid class, we suggest writing these methods:
